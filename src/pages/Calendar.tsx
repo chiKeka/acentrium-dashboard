@@ -7,6 +7,8 @@ import { EventInput, DateSelectArg, EventClickArg } from "@fullcalendar/core";
 import { Modal } from "../components/ui/modal";
 import { useModal } from "../hooks/useModal";
 import PageMeta from "../components/common/PageMeta";
+import { useUser } from "../context/UserContext";
+import { LoginModal } from "../components/auth/LoginModal";
 
 interface CalendarEvent extends EventInput {
   extendedProps: {
@@ -25,6 +27,8 @@ const Calendar: React.FC = () => {
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const calendarRef = useRef<FullCalendar>(null);
   const { isOpen, openModal, closeModal } = useModal();
+  const { canCreateEvents } = useUser();
+  const { isOpen: isLoginOpen, openModal: openLoginModal, closeModal: closeLoginModal } = useModal();
 
   const calendarsEvents = {
     "AI Education": "ai-education",
@@ -80,6 +84,10 @@ const Calendar: React.FC = () => {
   }, []);
 
   const handleDateSelect = (selectInfo: DateSelectArg) => {
+    if (!canCreateEvents) {
+      openLoginModal();
+      return;
+    }
     resetModalFields();
     setEventStartDate(selectInfo.startStr);
     setEventEndDate(selectInfo.endStr || selectInfo.startStr);
@@ -87,6 +95,10 @@ const Calendar: React.FC = () => {
   };
 
   const handleEventClick = (clickInfo: EventClickArg) => {
+    if (!canCreateEvents) {
+      openLoginModal();
+      return;
+    }
     const event = clickInfo.event;
     setSelectedEvent(event as unknown as CalendarEvent);
     setEventTitle(event.title);
@@ -177,7 +189,13 @@ const Calendar: React.FC = () => {
             customButtons={{
               addEventButton: {
                 text: "Add Event +",
-                click: openModal,
+                click: () => {
+                  if (!canCreateEvents) {
+                    openLoginModal();
+                    return;
+                  }
+                  openModal();
+                },
               },
             }}
           />
@@ -303,6 +321,12 @@ const Calendar: React.FC = () => {
             </div>
           </div>
         </Modal>
+
+        {/* Login Modal for non-team members */}
+        <LoginModal 
+          isOpen={isLoginOpen} 
+          onClose={closeLoginModal} 
+        />
         
         {/* Event Categories Legend */}
         <div className="p-6 border-t border-gray-200 dark:border-gray-700">
