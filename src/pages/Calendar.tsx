@@ -27,33 +27,54 @@ const Calendar: React.FC = () => {
   const { isOpen, openModal, closeModal } = useModal();
 
   const calendarsEvents = {
-    Danger: "danger",
-    Success: "success",
-    Primary: "primary",
-    Warning: "warning",
+    "AI Education": "ai-education",
+    "Research": "research",
+    "Community": "community",
+    "Policy": "policy",
+    "Workshop": "workshop",
+    "Conference": "conference",
   };
 
   useEffect(() => {
-    // Initialize with some events
+    // Initialize with Acentrium Africa events
     setEvents([
       {
         id: "1",
-        title: "Event Conf.",
+        title: "AI for African Women Workshop",
         start: new Date().toISOString().split("T")[0],
-        extendedProps: { calendar: "Danger" },
+        extendedProps: { calendar: "AI Education" },
       },
       {
         id: "2",
-        title: "Meeting",
+        title: "Monthly Research Review",
         start: new Date(Date.now() + 86400000).toISOString().split("T")[0],
-        extendedProps: { calendar: "Success" },
+        extendedProps: { calendar: "Research" },
       },
       {
         id: "3",
-        title: "Workshop",
+        title: "Youth AI Hackathon 2025",
         start: new Date(Date.now() + 172800000).toISOString().split("T")[0],
         end: new Date(Date.now() + 259200000).toISOString().split("T")[0],
-        extendedProps: { calendar: "Primary" },
+        extendedProps: { calendar: "Community" },
+      },
+      {
+        id: "4",
+        title: "AI Policy Framework Meeting",
+        start: new Date(Date.now() + 345600000).toISOString().split("T")[0],
+        extendedProps: { calendar: "Policy" },
+      },
+      {
+        id: "5",
+        title: "Machine Learning Fundamentals",
+        start: new Date(Date.now() + 432000000).toISOString().split("T")[0],
+        extendedProps: { calendar: "Workshop" },
+      },
+      {
+        id: "6",
+        title: "Africa AI Summit 2025",
+        start: new Date(Date.now() + 518400000).toISOString().split("T")[0],
+        end: new Date(Date.now() + 604800000).toISOString().split("T")[0],
+        extendedProps: { calendar: "Conference" },
       },
     ]);
   }, []);
@@ -118,10 +139,26 @@ const Calendar: React.FC = () => {
   return (
     <>
       <PageMeta
-        title="React.js Calendar Dashboard | TailAdmin - Next.js Admin Dashboard Template"
-        description="This is React.js Calendar Dashboard page for TailAdmin - React.js Tailwind CSS Admin Dashboard Template"
+        title="Acentrium Africa Events Calendar"
+        description="Track Acentrium Africa's AI education workshops, research meetings, community events, and policy discussions across Africa"
       />
       <div className="rounded-2xl border  border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
+        {/* Calendar Header */}
+        <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+          <div className="flex items-center space-x-3 mb-2">
+            <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-xl">A</span>
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                Acentrium Africa Events
+              </h1>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                AI Education • Research • Community • Policy
+              </p>
+            </div>
+          </div>
+        </div>
         <div className="custom-calendar">
           <FullCalendar
             ref={calendarRef}
@@ -156,8 +193,7 @@ const Calendar: React.FC = () => {
                 {selectedEvent ? "Edit Event" : "Add Event"}
               </h5>
               <p className="text-sm text-gray-500 dark:text-gray-400">
-                Plan your next big moment: schedule or edit an event to stay on
-                track
+                Schedule AI education workshops, research meetings, community events, and policy discussions for Acentrium Africa
               </p>
             </div>
             <div className="mt-8">
@@ -171,13 +207,14 @@ const Calendar: React.FC = () => {
                     type="text"
                     value={eventTitle}
                     onChange={(e) => setEventTitle(e.target.value)}
+                    placeholder="Enter event title"
                     className="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                   />
                 </div>
               </div>
               <div className="mt-6">
                 <label className="block mb-4 text-sm font-medium text-gray-700 dark:text-gray-400">
-                  Event Color
+                  Event Category
                 </label>
                 <div className="flex flex-wrap items-center gap-4 sm:gap-5">
                   {Object.entries(calendarsEvents).map(([key, value]) => (
@@ -198,6 +235,7 @@ const Calendar: React.FC = () => {
                               id={`modal${key}`}
                               checked={eventLevel === key}
                               onChange={() => setEventLevel(key)}
+                              aria-label={`Select ${key} category`}
                             />
                             <span className="flex items-center justify-center w-5 h-5 mr-2 border border-gray-300 rounded-full box dark:border-gray-700">
                               <span
@@ -226,6 +264,7 @@ const Calendar: React.FC = () => {
                     value={eventStartDate}
                     onChange={(e) => setEventStartDate(e.target.value)}
                     className="dark:bg-dark-900 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 pl-4 pr-11 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
+                    aria-label="Event start date"
                   />
                 </div>
               </div>
@@ -241,6 +280,7 @@ const Calendar: React.FC = () => {
                     value={eventEndDate}
                     onChange={(e) => setEventEndDate(e.target.value)}
                     className="dark:bg-dark-900 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 pl-4 pr-11 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
+                    aria-label="Event end date"
                   />
                 </div>
               </div>
@@ -263,16 +303,59 @@ const Calendar: React.FC = () => {
             </div>
           </div>
         </Modal>
+        
+        {/* Event Categories Legend */}
+        <div className="p-6 border-t border-gray-200 dark:border-gray-700">
+          <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-3">
+            Event Categories
+          </h4>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+            {Object.entries(calendarsEvents).map(([category, value]) => (
+              <div key={category} className="flex items-center space-x-2">
+                <div className={`w-3 h-3 rounded-full ${
+                  value === 'ai-education' ? 'bg-blue-500' :
+                  value === 'research' ? 'bg-green-500' :
+                  value === 'community' ? 'bg-purple-500' :
+                  value === 'policy' ? 'bg-orange-500' :
+                  value === 'workshop' ? 'bg-red-500' :
+                  'bg-yellow-500'
+                }`}></div>
+                <span className="text-xs text-gray-600 dark:text-gray-400">
+                  {category}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </>
   );
 };
 
 const renderEventContent = (eventInfo: any) => {
-  const colorClass = `fc-bg-${eventInfo.event.extendedProps.calendar.toLowerCase()}`;
+  const category = eventInfo.event.extendedProps.calendar;
+  const getCategoryColor = (category: string) => {
+    switch (category) {
+      case 'AI Education':
+        return 'bg-blue-500 text-white';
+      case 'Research':
+        return 'bg-green-500 text-white';
+      case 'Community':
+        return 'bg-purple-500 text-white';
+      case 'Policy':
+        return 'bg-orange-500 text-white';
+      case 'Workshop':
+        return 'bg-red-500 text-white';
+      case 'Conference':
+        return 'bg-yellow-500 text-black';
+      default:
+        return 'bg-gray-500 text-white';
+    }
+  };
+
   return (
     <div
-      className={`event-fc-color flex fc-event-main ${colorClass} p-1 rounded-sm`}
+      className={`event-fc-color flex fc-event-main ${getCategoryColor(category)} p-1 rounded-sm text-xs`}
     >
       <div className="fc-daygrid-event-dot"></div>
       <div className="fc-event-time">{eventInfo.timeText}</div>

@@ -1,0 +1,25 @@
+/* Logo component styles */
+.logo-radiating-lines {
+  transform-origin: 0 0;
+  transform: translate(-50%, -50%);
+}
+
+.logo-radiating-lines.sidebar {
+  transform: translate(-50%, -50%) rotate(var(--rotation)) translateY(-8px);
+}
+
+.logo-radiating-lines.header {
+  transform: translate(-50%, -50%) rotate(var(--rotation)) translateY(-6px);
+}
+
+.logo-radiating-lines.dashboard {
+  transform: translate(-50%, -50%) rotate(var(--rotation)) translateY(-10px);
+}
+
+.logo-radiating-lines.user {
+  transform: translate(-50%, -50%) rotate(var(--rotation)) translateY(-8px);
+}
+
+.logo-radiating-lines.notification {
+  transform: translate(-50%, -50%) rotate(var(--rotation)) translateY(-6px);
+}

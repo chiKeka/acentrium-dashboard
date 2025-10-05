@@ -17,7 +17,7 @@ const Alert: React.FC<AlertProps> = ({
   linkHref = "#",
   linkText = "Learn more",
 }) => {
-  // Tailwind classes for each variant
+  // Acentrium Africa Dashboard alert variants
   const variantClasses = {
     success: {
       container:

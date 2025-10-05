@@ -19,11 +19,25 @@ export default function UserDropdown() {
         onClick={toggleDropdown}
         className="flex items-center text-gray-700 dropdown-toggle dark:text-gray-400"
       >
-        <span className="mr-3 overflow-hidden rounded-full h-11 w-11">
-          <img src="/images/user/owner.jpg" alt="User" />
+        <span className="mr-3 overflow-hidden rounded-full h-11 w-11 bg-black flex items-center justify-center relative">
+          <span className="text-gray-600 font-bold text-lg relative z-10">A</span>
+          <div className="absolute inset-0 opacity-30">
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full">
+              {[...Array(12)].map((_, i) => (
+                <div
+                  key={i}
+                  className="absolute top-1/2 left-1/2 w-0.5 h-3 bg-gray-600 transform -translate-x-1/2 -translate-y-1/2"
+                  style={{
+                    transformOrigin: '0 0',
+                    transform: `translate(-50%, -50%) rotate(${i * 30}deg) translateY(-8px)`,
+                  }}
+                />
+              ))}
+            </div>
+          </div>
         </span>
 
-        <span className="block mr-1 font-medium text-theme-sm">Musharof</span>
+        <span className="block mr-1 font-medium text-theme-sm">Acentrium Team</span>
         <svg
           className={`stroke-gray-500 dark:stroke-gray-400 transition-transform duration-200 ${
             isOpen ? "rotate-180" : ""

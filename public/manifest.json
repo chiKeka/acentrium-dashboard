@@ -1,0 +1,16 @@
+{
+  "name": "Acentrium Africa Impact Dashboard",
+  "short_name": "Acentrium Dashboard",
+  "description": "Building Africa's AI Ecosystem: Education, Innovation, Impact",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#0284c7",
+  "background_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 import { Link } from "react-router";
 import { useSidebar } from "../context/SidebarContext";
@@ -84,21 +84,34 @@ const AppHeader: React.FC = () => {
           </button>
 
           <Link to="/" className="lg:hidden">
-            <img
-              className="dark:hidden"
-              src="./images/logo/logo.svg"
-              alt="Logo"
-            />
-            <img
-              className="hidden dark:block"
-              src="./images/logo/logo-dark.svg"
-              alt="Logo"
-            />
+            <div className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center relative overflow-hidden">
+                <span className="text-gray-600 font-bold text-lg relative z-10">A</span>
+                <div className="absolute inset-0 opacity-30">
+                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full">
+                    {[...Array(12)].map((_, i) => (
+                      <div
+                        key={i}
+                        className="absolute top-1/2 left-1/2 w-0.5 h-2 bg-gray-600 transform -translate-x-1/2 -translate-y-1/2"
+                        style={{
+                          transformOrigin: '0 0',
+                          transform: `translate(-50%, -50%) rotate(${i * 30}deg) translateY(-6px)`,
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <span className="text-xl font-bold text-gray-900 dark:text-white">
+                Acentrium
+              </span>
+            </div>
           </Link>
 
           <button
             onClick={toggleApplicationMenu}
             className="flex items-center justify-center w-10 h-10 text-gray-700 rounded-lg z-99999 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 lg:hidden"
+            aria-label="Toggle Application Menu"
           >
             <svg
               width="24"
