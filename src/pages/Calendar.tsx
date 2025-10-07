@@ -27,11 +27,6 @@ const Calendar: React.FC = () => {
   const { calendarEvents, addCalendarEvent, updateCalendarEvent } = useData();
   const { isOpen: isLoginOpen, openModal: openLoginModal, closeModal: closeLoginModal } = useModal();
 
-  // Reset login attempt flag when login modal is closed without successful login
-  const handleCloseLoginModal = () => {
-    closeLoginModal();
-    // Don't reset hasAttemptedLogin here - let it persist so admin UI shows
-  };
 
   const calendarsEvents = {
     "AI Education": "ai-education",
