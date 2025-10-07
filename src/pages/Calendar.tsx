@@ -1,20 +1,17 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import { EventInput, DateSelectArg, EventClickArg } from "@fullcalendar/core";
+import { DateSelectArg, EventClickArg } from "@fullcalendar/core";
 import { Modal } from "../components/ui/modal";
 import { useModal } from "../hooks/useModal";
 import PageMeta from "../components/common/PageMeta";
 import { useUser } from "../context/UserContext";
+import { useData } from "../context/DataContext";
+import { CalendarEvent } from "../types/dashboard";
 import { LoginModal } from "../components/auth/LoginModal";
 
-interface CalendarEvent extends EventInput {
-  extendedProps: {
-    calendar: string;
-  };
-}
 
 const Calendar: React.FC = () => {
   const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(
@@ -24,11 +21,17 @@ const Calendar: React.FC = () => {
   const [eventStartDate, setEventStartDate] = useState("");
   const [eventEndDate, setEventEndDate] = useState("");
   const [eventLevel, setEventLevel] = useState("");
-  const [events, setEvents] = useState<CalendarEvent[]>([]);
   const calendarRef = useRef<FullCalendar>(null);
   const { isOpen, openModal, closeModal } = useModal();
-  const { canCreateEvents } = useUser();
+  const { canCreateEvents, setHasAttemptedLogin } = useUser();
+  const { calendarEvents, addCalendarEvent, updateCalendarEvent } = useData();
   const { isOpen: isLoginOpen, openModal: openLoginModal, closeModal: closeLoginModal } = useModal();
+
+  // Reset login attempt flag when login modal is closed without successful login
+  const handleCloseLoginModal = () => {
+    closeLoginModal();
+    // Don't reset hasAttemptedLogin here - let it persist so admin UI shows
+  };
 
   const calendarsEvents = {
     "AI Education": "ai-education",
@@ -39,52 +42,11 @@ const Calendar: React.FC = () => {
     "Conference": "conference",
   };
 
-  useEffect(() => {
-    // Initialize with Acentrium Africa events
-    setEvents([
-      {
-        id: "1",
-        title: "AI for African Women Workshop",
-        start: new Date().toISOString().split("T")[0],
-        extendedProps: { calendar: "AI Education" },
-      },
-      {
-        id: "2",
-        title: "Monthly Research Review",
-        start: new Date(Date.now() + 86400000).toISOString().split("T")[0],
-        extendedProps: { calendar: "Research" },
-      },
-      {
-        id: "3",
-        title: "Youth AI Hackathon 2025",
-        start: new Date(Date.now() + 172800000).toISOString().split("T")[0],
-        end: new Date(Date.now() + 259200000).toISOString().split("T")[0],
-        extendedProps: { calendar: "Community" },
-      },
-      {
-        id: "4",
-        title: "AI Policy Framework Meeting",
-        start: new Date(Date.now() + 345600000).toISOString().split("T")[0],
-        extendedProps: { calendar: "Policy" },
-      },
-      {
-        id: "5",
-        title: "Machine Learning Fundamentals",
-        start: new Date(Date.now() + 432000000).toISOString().split("T")[0],
-        extendedProps: { calendar: "Workshop" },
-      },
-      {
-        id: "6",
-        title: "Africa AI Summit 2025",
-        start: new Date(Date.now() + 518400000).toISOString().split("T")[0],
-        end: new Date(Date.now() + 604800000).toISOString().split("T")[0],
-        extendedProps: { calendar: "Conference" },
-      },
-    ]);
-  }, []);
+  // Calendar events are now managed through DataContext
 
   const handleDateSelect = (selectInfo: DateSelectArg) => {
     if (!canCreateEvents) {
+      setHasAttemptedLogin(true);
       openLoginModal();
       return;
     }
@@ -96,6 +58,7 @@ const Calendar: React.FC = () => {
 
   const handleEventClick = (clickInfo: EventClickArg) => {
     if (!canCreateEvents) {
+      setHasAttemptedLogin(true);
       openLoginModal();
       return;
     }
@@ -111,30 +74,21 @@ const Calendar: React.FC = () => {
   const handleAddOrUpdateEvent = () => {
     if (selectedEvent) {
       // Update existing event
-      setEvents((prevEvents) =>
-        prevEvents.map((event) =>
-          event.id === selectedEvent.id
-            ? {
-                ...event,
-                title: eventTitle,
-                start: eventStartDate,
-                end: eventEndDate,
-                extendedProps: { calendar: eventLevel },
-              }
-            : event
-        )
-      );
-    } else {
-      // Add new event
-      const newEvent: CalendarEvent = {
-        id: Date.now().toString(),
+      updateCalendarEvent(selectedEvent.id, {
         title: eventTitle,
         start: eventStartDate,
-        end: eventEndDate,
+        end: eventEndDate || eventStartDate,
+        extendedProps: { calendar: eventLevel },
+      } as Partial<CalendarEvent>);
+    } else {
+      // Add new event
+      addCalendarEvent({
+        title: eventTitle,
+        start: eventStartDate,
+        end: eventEndDate || eventStartDate,
         allDay: true,
         extendedProps: { calendar: eventLevel },
-      };
-      setEvents((prevEvents) => [...prevEvents, newEvent]);
+      });
     }
     closeModal();
     resetModalFields();
@@ -181,7 +135,7 @@ const Calendar: React.FC = () => {
               center: "title",
               right: "dayGridMonth,timeGridWeek,timeGridDay",
             }}
-            events={events}
+            events={calendarEvents}
             selectable={true}
             select={handleDateSelect}
             eventClick={handleEventClick}

@@ -1,5 +1,6 @@
 import { useCallback } from "react";
-import { Link, useLocation } from "react-router";
+import { Link, useLocation } from "react-router-dom";
+import { useUser } from "../context/UserContext";
 
 // Acentrium Africa Dashboard Icons
 import {
@@ -48,8 +49,9 @@ const navItems: NavItem[] = [
 ];
 
 const AppSidebar: React.FC = () => {
-  const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
+  const { isExpanded, isMobileOpen, isHovered, setIsHovered, toggleMobileSidebar } = useSidebar();
   const location = useLocation();
+  const { hasAttemptedLogin, canCreateEvents } = useUser();
 
   const isActive = useCallback(
     (path: string) => location.pathname === path,
@@ -86,8 +88,17 @@ const AppSidebar: React.FC = () => {
   );
 
   return (
-            <aside
-              className={`fixed flex flex-col top-0 px-5 left-0 bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200
+    <>
+      {/* Mobile Overlay */}
+      {isMobileOpen && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+          onClick={toggleMobileSidebar}
+        />
+      )}
+      
+      <aside
+        className={`fixed flex flex-col top-0 px-5 left-0 bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200
         ${
           isExpanded || isMobileOpen
             ? "w-[290px]"
@@ -97,9 +108,9 @@ const AppSidebar: React.FC = () => {
         }
         ${isMobileOpen ? "translate-x-0" : "-translate-x-full"}
         lg:translate-x-0`}
-      onMouseEnter={() => !isExpanded && setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
+        onMouseEnter={() => !isExpanded && setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
       <div
         className={`py-8 flex ${
           !isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
@@ -116,9 +127,8 @@ const AppSidebar: React.FC = () => {
                               <div
                                 key={i}
                                 className="absolute top-1/2 left-1/2 w-0.5 h-3 bg-gray-600 logo-radiating-lines sidebar"
-                                style={{
-                                  '--rotation': `${i * 30}deg`,
-                                } as React.CSSProperties}
+                                data-rotation={i * 30}
+                                style={{ '--rotation': i * 30 } as React.CSSProperties}
                               />
                             ))}
                           </div>
@@ -142,9 +152,7 @@ const AppSidebar: React.FC = () => {
                             <div
                               key={i}
                               className="absolute top-1/2 left-1/2 w-0.5 h-3 bg-gray-600 logo-radiating-lines sidebar"
-                              style={{
-                                '--rotation': `${i * 30}deg`,
-                              } as React.CSSProperties}
+                                data-rotation={i * 30}
                             />
                           ))}
                         </div>
@@ -171,12 +179,32 @@ const AppSidebar: React.FC = () => {
                 )}
               </h2>
               {renderMenuItems(navItems)}
+              
+              {/* Admin Login Button - Only show after login attempt */}
+              {hasAttemptedLogin && !canCreateEvents && (
+                <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+                  <Link
+                    to="/admin"
+                    className="menu-item group menu-item-inactive"
+                  >
+                    <span className="menu-item-icon-size menu-item-icon-inactive">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                      </svg>
+                    </span>
+                    {(isExpanded || isHovered || isMobileOpen) && (
+                      <span className="menu-item-text text-sm">Admin Login</span>
+                    )}
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         </nav>
         {isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null}
       </div>
     </aside>
+    </>
   );
 };
 

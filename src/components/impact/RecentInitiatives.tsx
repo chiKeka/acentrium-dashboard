@@ -1,69 +1,9 @@
 
 
-interface Initiative {
-  id: number;
-  title: string;
-  description: string;
-  category: 'education' | 'research' | 'community' | 'policy';
-  status: 'active' | 'completed' | 'planned';
-  date: string;
-  participants?: number;
-  impact?: string;
-}
+import { useData } from '../../context/DataContext';
 
 export default function RecentInitiatives() {
-  const initiatives: Initiative[] = [
-    {
-      id: 1,
-      title: "AI for African Women Initiative",
-      description: "Empowering African women with AI skills and entrepreneurship opportunities",
-      category: 'education',
-      status: 'active',
-      date: '2025-09-15',
-      participants: 450,
-      impact: '12 startups launched'
-    },
-    {
-      id: 2,
-      title: "Youth AI Hackathon 2025",
-      description: "Pan-African hackathon connecting young innovators across 15 countries",
-      category: 'community',
-      status: 'completed',
-      date: '2025-08-20',
-      participants: 1200,
-      impact: '45 innovative solutions'
-    },
-    {
-      id: 3,
-      title: "AI Policy Framework Research",
-      description: "Developing comprehensive AI governance frameworks for African nations",
-      category: 'research',
-      status: 'active',
-      date: '2025-09-01',
-      participants: 25,
-      impact: '3 policy papers published'
-    },
-    {
-      id: 4,
-      title: "Rural AI Education Program",
-      description: "Bringing AI education to underserved rural communities",
-      category: 'education',
-      status: 'active',
-      date: '2025-09-10',
-      participants: 300,
-      impact: '8 rural centers established'
-    },
-    {
-      id: 5,
-      title: "AI Ethics Workshop Series",
-      description: "Training program on responsible AI development and deployment",
-      category: 'education',
-      status: 'planned',
-      date: '2025-10-15',
-      participants: 0,
-      impact: 'Expected: 200 professionals'
-    }
-  ];
+  const { initiatives } = useData();
 
   const getCategoryColor = (category: string) => {
     switch (category) {

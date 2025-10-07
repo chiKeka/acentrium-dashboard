@@ -16,8 +16,10 @@ type UserContextType = {
   isLoading: boolean;
   isTeamMember: boolean;
   canCreateEvents: boolean;
+  hasAttemptedLogin: boolean;
   login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
+  setHasAttemptedLogin: (attempted: boolean) => void;
 };
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -37,6 +39,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [hasAttemptedLogin, setHasAttemptedLogin] = useState(false);
 
   useEffect(() => {
     // Check for existing session on app load
@@ -96,6 +99,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       setUser(newUser);
       localStorage.setItem("acentrium_user", JSON.stringify(newUser));
       localStorage.setItem("acentrium_session_timeout", Date.now().toString());
+      setHasAttemptedLogin(false); // Reset login attempt flag on successful login
       setIsLoading(false);
       return true;
     } else {
@@ -108,6 +112,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const logout = () => {
     setUser(null);
+    setHasAttemptedLogin(false);
     localStorage.removeItem("acentrium_user");
     localStorage.removeItem("acentrium_session_timeout");
   };
@@ -119,8 +124,10 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
         isLoading,
         isTeamMember,
         canCreateEvents,
+        hasAttemptedLogin,
         login,
         logout,
+        setHasAttemptedLogin,
       }}
     >
       {children}

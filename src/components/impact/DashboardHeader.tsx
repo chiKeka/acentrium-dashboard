@@ -1,9 +1,10 @@
 
-
 export default function DashboardHeader() {
+  
   return (
     <div className="bg-gradient-to-r from-blue-600 to-blue-800 rounded-lg shadow-lg p-8 mb-8">
       <div className="text-white">
+        
         <div className="flex items-center space-x-4 mb-4">
           <div className="w-16 h-16 bg-black bg-opacity-30 rounded-lg flex items-center justify-center backdrop-blur-sm relative overflow-hidden">
             <span className="text-gray-600 font-bold text-3xl relative z-10">A</span>

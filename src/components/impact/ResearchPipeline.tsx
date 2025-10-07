@@ -1,93 +1,9 @@
 
 
-interface ResearchProject {
-  id: number;
-  title: string;
-  description: string;
-  stage: 'planning' | 'in-progress' | 'review' | 'completed';
-  startDate: string;
-  expectedCompletion: string;
-  teamSize: number;
-  funding: string;
-  impact: string;
-  category: 'education' | 'healthcare' | 'agriculture' | 'finance' | 'governance';
-}
+import { useData } from '../../context/DataContext';
 
 export default function ResearchPipeline() {
-  const projects: ResearchProject[] = [
-    {
-      id: 1,
-      title: 'AI-Driven Agricultural Solutions for Smallholder Farmers',
-      description: 'Developing mobile AI tools for crop disease detection and yield optimization',
-      stage: 'in-progress',
-      startDate: '2025-01-15',
-      expectedCompletion: '2025-12-31',
-      teamSize: 8,
-      funding: '$150,000',
-      impact: 'Target: 10,000 farmers across 5 countries',
-      category: 'agriculture',
-    },
-    {
-      id: 2,
-      title: 'AI Ethics Framework for African Context',
-      description: 'Creating culturally-aware AI ethics guidelines for African societies',
-      stage: 'review',
-      startDate: '2024-09-01',
-      expectedCompletion: '2025-06-30',
-      teamSize: 12,
-      funding: '$200,000',
-      impact: 'Policy framework for 15+ countries',
-      category: 'governance',
-    },
-    {
-      id: 3,
-      title: 'AI-Powered Healthcare Diagnostics',
-      description: 'Mobile app for early detection of common diseases in rural areas',
-      stage: 'in-progress',
-      startDate: '2025-03-01',
-      expectedCompletion: '2026-02-28',
-      teamSize: 15,
-      funding: '$300,000',
-      impact: 'Potential to reach 50,000 patients',
-      category: 'healthcare',
-    },
-    {
-      id: 4,
-      title: 'Financial Inclusion through AI',
-      description: 'AI-driven credit scoring for underserved populations',
-      stage: 'planning',
-      startDate: '2025-06-01',
-      expectedCompletion: '2026-05-31',
-      teamSize: 10,
-      funding: '$180,000',
-      impact: 'Access to credit for 100,000 individuals',
-      category: 'finance',
-    },
-    {
-      id: 5,
-      title: 'AI Education Platform for Rural Schools',
-      description: 'Adaptive learning system for STEM education in remote areas',
-      stage: 'completed',
-      startDate: '2024-01-01',
-      expectedCompletion: '2024-12-31',
-      teamSize: 6,
-      funding: '$120,000',
-      impact: 'Deployed in 200 schools, 15,000 students',
-      category: 'education',
-    },
-    {
-      id: 6,
-      title: 'Climate Change Prediction Models',
-      description: 'AI models for weather forecasting and climate impact assessment',
-      stage: 'in-progress',
-      startDate: '2025-02-01',
-      expectedCompletion: '2025-11-30',
-      teamSize: 9,
-      funding: '$220,000',
-      impact: 'Weather alerts for 5 million people',
-      category: 'agriculture',
-    },
-  ];
+  const { researchProjects } = useData();
 
   const getStageColor = (stage: string) => {
     switch (stage) {
@@ -144,12 +60,12 @@ export default function ResearchPipeline() {
     }
   };
 
-  const stageCounts = projects.reduce((acc, project) => {
+  const stageCounts = researchProjects.reduce((acc: Record<string, number>, project) => {
     acc[project.stage] = (acc[project.stage] || 0) + 1;
     return acc;
   }, {} as Record<string, number>);
 
-  const totalFunding = projects.reduce((sum, project) => {
+  const totalFunding = researchProjects.reduce((sum: number, project) => {
     return sum + parseInt(project.funding.replace(/[$,]/g, ''));
   }, 0);
 
@@ -168,7 +84,7 @@ export default function ResearchPipeline() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
           <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-            {projects.length}
+            {researchProjects.length}
           </div>
           <div className="text-sm text-blue-600 dark:text-blue-400">
             Active Projects
@@ -184,7 +100,7 @@ export default function ResearchPipeline() {
         </div>
         <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4">
           <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
-            {projects.reduce((sum, p) => sum + p.teamSize, 0)}
+            {researchProjects.reduce((sum: number, p) => sum + p.teamSize, 0)}
           </div>
           <div className="text-sm text-purple-600 dark:text-purple-400">
             Researchers
@@ -229,7 +145,7 @@ export default function ResearchPipeline() {
         <h4 className="text-md font-medium text-gray-900 dark:text-white">
           Research Projects
         </h4>
-        {projects.map((project) => (
+        {researchProjects.map((project) => (
           <div key={project.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
             <div className="flex items-start justify-between mb-3">
               <div className="flex-1">
@@ -305,7 +221,7 @@ export default function ResearchPipeline() {
           <li>• <strong>Diverse sectors:</strong> Research spans agriculture, healthcare, finance, and governance</li>
           <li>• <strong>Significant funding:</strong> ${(totalFunding / 1000).toFixed(0)}K total investment in innovation</li>
           <li>• <strong>Strong completion:</strong> {stageCounts.completed || 0} projects successfully completed</li>
-          <li>• <strong>Team collaboration:</strong> {projects.reduce((sum, p) => sum + p.teamSize, 0)} researchers actively contributing</li>
+          <li>• <strong>Team collaboration:</strong> {researchProjects.reduce((sum: number, p) => sum + p.teamSize, 0)} researchers actively contributing</li>
         </ul>
       </div>
     </div>

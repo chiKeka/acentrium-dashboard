@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Calendar from "../../pages/Calendar";
 import Research from "../../pages/Research";
 import Programs from "../../pages/Programs";

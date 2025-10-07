@@ -1,121 +1,12 @@
 
 import Chart from 'react-apexcharts';
+import { useData } from '../../context/DataContext';
 
 export default function ProgramCompletion() {
-  const completionData = {
-    series: [
-      {
-        name: 'Completion Rate',
-        data: [85, 78, 92, 88, 76, 89, 94, 82, 87, 91, 86, 90], // Monthly completion rates
-      },
-    ],
-    options: {
-      chart: {
-        type: 'line' as const,
-        height: 300,
-        toolbar: {
-          show: true,
-        },
-      },
-      colors: ['#10B981'],
-      stroke: {
-        curve: 'smooth' as const,
-        width: 3,
-      },
-      markers: {
-        size: 6,
-        colors: ['#10B981'],
-        strokeColors: '#ffffff',
-        strokeWidth: 2,
-      },
-      xaxis: {
-        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
-                    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-        labels: {
-          style: {
-            colors: '#6B7280',
-          },
-        },
-      },
-      yaxis: {
-        min: 70,
-        max: 100,
-        labels: {
-          style: {
-            colors: '#6B7280',
-          },
-          formatter: function (val: number) {
-            return val + '%';
-          },
-        },
-      },
-      grid: {
-        borderColor: '#E5E7EB',
-        strokeDashArray: 4,
-      },
-      tooltip: {
-        y: {
-          formatter: function (val: number) {
-            return val + '% completion rate';
-          },
-        },
-      },
-    },
-  };
+  const { programs, completionData } = useData();
 
-  const programTypes = [
-    {
-      name: 'AI Fundamentals',
-      enrolled: 450,
-      completed: 382,
-      completionRate: 85,
-      avgDuration: '6 weeks',
-      color: 'bg-blue-500',
-    },
-    {
-      name: 'Machine Learning',
-      enrolled: 320,
-      completed: 288,
-      completionRate: 90,
-      avgDuration: '8 weeks',
-      color: 'bg-green-500',
-    },
-    {
-      name: 'Data Science',
-      enrolled: 280,
-      completed: 224,
-      completionRate: 80,
-      avgDuration: '10 weeks',
-      color: 'bg-purple-500',
-    },
-    {
-      name: 'AI Ethics',
-      enrolled: 180,
-      completed: 162,
-      completionRate: 90,
-      avgDuration: '4 weeks',
-      color: 'bg-orange-500',
-    },
-    {
-      name: 'Deep Learning',
-      enrolled: 150,
-      completed: 120,
-      completionRate: 80,
-      avgDuration: '12 weeks',
-      color: 'bg-red-500',
-    },
-    {
-      name: 'AI for Business',
-      enrolled: 200,
-      completed: 170,
-      completionRate: 85,
-      avgDuration: '6 weeks',
-      color: 'bg-teal-500',
-    },
-  ];
-
-  const totalEnrolled = programTypes.reduce((sum, program) => sum + program.enrolled, 0);
-  const totalCompleted = programTypes.reduce((sum, program) => sum + program.completed, 0);
+  const totalEnrolled = programs.reduce((sum, program) => sum + program.enrolled, 0);
+  const totalCompleted = programs.reduce((sum, program) => sum + program.completed, 0);
   const overallCompletionRate = Math.round((totalCompleted / totalEnrolled) * 100);
 
   return (
@@ -179,7 +70,7 @@ export default function ProgramCompletion() {
           Program Performance Breakdown
         </h4>
         <div className="space-y-4">
-          {programTypes.map((program, index) => (
+          {programs.map((program, index) => (
             <div key={index} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center space-x-3">

@@ -1,4 +1,6 @@
 
+import React from 'react';
+import { useData } from '../../context/DataContext';
 
 interface MetricCardProps {
   title: string;
@@ -38,28 +40,28 @@ const MetricCard: React.FC<MetricCardProps> = ({
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 md:p-6">
       <div className="flex items-center justify-between">
-        <div className="flex-1">
-          <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1 truncate">
             {title}
           </p>
-          <p className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
+          <p className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-1">
             {value}
           </p>
           {change && (
-            <p className={`text-sm ${getChangeColor()}`}>
+            <p className={`text-xs md:text-sm ${getChangeColor()}`}>
               {change}
             </p>
           )}
           {description && (
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 line-clamp-2">
               {description}
             </p>
           )}
         </div>
-        <div className="flex-shrink-0">
-          <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
+        <div className="flex-shrink-0 ml-2">
+          <div className="w-10 h-10 md:w-12 md:h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
             {icon}
           </div>
         </div>
@@ -69,61 +71,15 @@ const MetricCard: React.FC<MetricCardProps> = ({
 };
 
 export default function ImpactMetrics({ filter }: ImpactMetricsProps) {
-  // Mock data for different regions and countries
-  const getAllData = () => ({
-    students: 2847,
-    projects: 23,
-    countries: 18,
-    partners: 156,
-    change: '+12.5% from last month',
-    projectsChange: '+3 new projects this quarter',
-    countriesChange: 'Expanding to 3 new countries',
-    partnersChange: '+8 new partnerships'
-  });
+  const { dashboardMetrics, regionalData } = useData();
+  
+  // Get data from context
+  const getAllData = () => dashboardMetrics;
 
-  const getWestAfricaData = () => ({
-    students: 1145, // Nigeria + Ghana + Senegal + Mali + Burkina Faso
-    projects: 13,
-    countries: 5,
-    partners: 42,
-    change: '+8.2% from last month',
-    projectsChange: '+1 new project this quarter',
-    countriesChange: 'Expanding in West Africa',
-    partnersChange: '+3 new partnerships'
-  });
-
-  const getEastAfricaData = () => ({
-    students: 825, // Kenya + Tanzania + Ethiopia + Uganda + Rwanda
-    projects: 7,
-    countries: 5,
-    partners: 28,
-    change: '+15.8% from last month',
-    projectsChange: '+2 new projects this quarter',
-    countriesChange: 'Strong growth in East Africa',
-    partnersChange: '+4 new partnerships'
-  });
-
-  const getNorthAfricaData = () => ({
-    students: 397, // Egypt + Morocco + Tunisia + Algeria
-    projects: 4,
-    countries: 4,
-    partners: 22,
-    change: '+6.3% from last month',
-    projectsChange: 'Focus on policy development',
-    countriesChange: 'Policy framework expansion',
-    partnersChange: '+2 new partnerships'
-  });
-
-  const getSouthernAfricaData = () => ({
-    students: 480, // South Africa + Botswana + Namibia + Zambia
-    projects: 6,
-    countries: 4,
-    partners: 18,
-    change: '+11.2% from last month',
-    projectsChange: '+1 new research project',
-    countriesChange: 'Emerging market growth',
-    partnersChange: '+1 new partnership'
-  });
+  const getWestAfricaData = () => regionalData.find(r => r.region === 'West Africa') || regionalData[0];
+  const getEastAfricaData = () => regionalData.find(r => r.region === 'East Africa') || regionalData[1];
+  const getNorthAfricaData = () => regionalData.find(r => r.region === 'North Africa') || regionalData[2];
+  const getSouthernAfricaData = () => regionalData.find(r => r.region === 'Southern Africa') || regionalData[3];
 
 
   const getFilteredData = () => {
@@ -151,7 +107,7 @@ export default function ImpactMetrics({ filter }: ImpactMetricsProps) {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
       <MetricCard
         title="Students Trained"
         value={data.students.toLocaleString()}
