@@ -12,6 +12,7 @@ interface FilterData {
 }
 
 export default function Home() {
+  //State for managing active filter across components
   const [activeFilter, setActiveFilter] = useState<FilterData>({
     type: 'all',
     value: 'all'
