@@ -140,7 +140,7 @@ const ResearchManager: React.FC = () => {
                 </label>
                 <select
                   value={formData.category || 'education'}
-                  onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value as any }))}
+                  onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value as 'education' | 'healthcare' | 'agriculture' | 'finance' | 'governance' }))}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
                   aria-label="Project Category"
                 >
@@ -174,7 +174,7 @@ const ResearchManager: React.FC = () => {
                 </label>
                 <select
                   value={formData.stage || 'planning'}
-                  onChange={(e) => setFormData(prev => ({ ...prev, stage: e.target.value as any }))}
+                  onChange={(e) => setFormData(prev => ({ ...prev, stage: e.target.value as 'planning' | 'in-progress' | 'review' | 'completed' }))}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
                   aria-label="Project Stage"
                 >
