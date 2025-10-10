@@ -305,7 +305,15 @@ const Calendar: React.FC = () => {
   );
 };
 
-const renderEventContent = (eventInfo: any) => {
+interface EventInfo {
+  event: {
+    extendedProps: {
+      calendar: string;
+    };
+  };
+}
+
+const renderEventContent = (eventInfo: EventInfo) => {
   const category = eventInfo.event.extendedProps.calendar;
   const getCategoryColor = (category: string) => {
     switch (category) {

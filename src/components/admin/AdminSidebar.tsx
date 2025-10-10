@@ -2,10 +2,18 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { AdminSection } from '../../types/dashboard';
 
+type User = {
+  id: string;
+  name: string;
+  email: string;
+  role: "team_member" | "public_user";
+  isTeamMember: boolean;
+};
+
 interface AdminSidebarProps {
   activeSection: AdminSection;
   onSectionChange: (section: AdminSection) => void;
-  user: any;
+  user: User;
 }
 
 const AdminSidebar: React.FC<AdminSidebarProps> = ({ 

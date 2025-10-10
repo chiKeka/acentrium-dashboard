@@ -45,7 +45,7 @@ export default function GenderDemographics() {
       },
       tooltip: {
         y: {
-          formatter: function (val: number, opts: any) {
+          formatter: function (val: number, opts: { w: { globals: { seriesTotals: number[] } } }) {
             const total = opts.w.globals.seriesTotals.reduce((a: number, b: number) => a + b, 0);
             const count = Math.round((val / 100) * total);
             return count + ' participants (' + val + '%)';
@@ -117,7 +117,7 @@ export default function GenderDemographics() {
   ];
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+    <div className="bg-[#e8e8e8] dark:bg-gray-800 rounded-lg shadow-2xl border border-gray-200 dark:border-gray-700 p-6">
       <div className="mb-6">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
           Gender & Demographics

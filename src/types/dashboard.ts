@@ -67,12 +67,14 @@ export interface CountryData {
   region: string;
 }
 
+import { ApexOptions } from 'apexcharts';
+
 export interface CompletionData {
   series: Array<{
     name: string;
     data: number[];
   }>;
-  options: any;
+  options: ApexOptions;
 }
 
 export type AdminSection = 'dashboard' | 'research' | 'programs' | 'initiatives' | 'calendar' | 'settings';

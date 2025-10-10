@@ -1,6 +1,5 @@
 import { useCallback } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { useUser } from "../context/UserContext";
 import Asset from "../icons/Asset 4.svg"
 import DesktopMenuToggle from "../components/ui/button/DesktopMenuToggle";
 
@@ -8,7 +7,6 @@ import DesktopMenuToggle from "../components/ui/button/DesktopMenuToggle";
 import {
   CalenderIcon,
   GridIcon,
-  HorizontaLDots,
   PieChartIcon,
   ListIcon,
   UserCircleIcon,
@@ -99,7 +97,7 @@ const AppSidebar: React.FC = () => {
           {isExpanded || isHovered || isMobileOpen || isMobile ? (
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 rounded-lg ">
-                <img src={Asset} alt="Acentrium Logo"  />
+                <img src={Asset} alt="Acentrium Logo"  color="#white"/>
                 <div>
                   <div>
                     {[...Array(12)].map((_, i) => (
@@ -114,10 +112,10 @@ const AppSidebar: React.FC = () => {
                 </div>
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900 dark:text-white">
+                <h1 className="text-xl font-bold text-white dark:text-white">
                   Acentrium
                 </h1>
-                <p className="text-xs text-gray-600 dark:text-gray-400">
+                <p className="text-xs text-gray-200 dark:text-gray-400">
                   Africa Dashboard
                 </p>
               </div>
@@ -168,7 +166,7 @@ const AppSidebar: React.FC = () => {
     <>
       {/* Desktop Sidebar */}
       <aside
-        className={`hidden lg:flex fixed flex-col top-0 px-5 left-0 bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200
+        className={`hidden lg:flex fixed flex-col top-0 px-5 left-0 bg-[#1e2027] dark:bg-gray-900 dark:border-gray-800 text-gray-400 h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200
           ${
             isExpanded || isMobileOpen
               ? "w-[290px]"
@@ -184,7 +182,7 @@ const AppSidebar: React.FC = () => {
 
       {/* Mobile Sidebar (slide-out) */}
       <aside
-        className={`lg:hidden fixed flex flex-col top-0 px-5 left-0 bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200 w-[290px]
+        className={`lg:hidden fixed flex flex-col top-0 px-5 left-0 bg-[#1e2027] dark:bg-gray-900 dark:border-gray-800 text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200 w-[290px]
           ${isMobileOpen ? "translate-x-0" : "-translate-x-full"}`}
       >
         <SidebarContent isMobile={true} />
