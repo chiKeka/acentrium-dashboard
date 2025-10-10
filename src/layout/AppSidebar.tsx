@@ -51,8 +51,9 @@ const navItems: NavItem[] = [
 ];
 
 const AppSidebar: React.FC = () => {
-  const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
+  const { isExpanded, isMobileOpen, isHovered, setIsHovered, toggleMobileSidebar } = useSidebar();
   const location = useLocation();
+  const { hasAttemptedLogin, canCreateEvents, setHasAttemptedLogin } = useUser();
 
   const isActive = useCallback(
     (path: string) => location.pathname === path,
@@ -105,6 +106,7 @@ const AppSidebar: React.FC = () => {
                     {[...Array(12)].map((_, i) => (
                       <div
                       key={i}
+                        className="absolute top-1/2 left-1/2 w-0.5 h-3 bg-gray-600 logo-radiating-lines sidebar"
                         style={{
                           '--rotation': `${i * 30}deg`,
                         } as React.CSSProperties}
@@ -128,13 +130,13 @@ const AppSidebar: React.FC = () => {
               <div>
                 <div className=" top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full">
                   {[...Array(12)].map((_, i) => (
-                    <div
-                      key={i}
-                      className="top-1/2 left-1/2 w-0.5 h-3 bg-gray-600 logo-radiating-lines sidebar"
-                      style={{
-                        '--rotation': `${i * 30}deg`,
-                      } as React.CSSProperties}
-                    />
+                      <div
+                        key={i}
+                        className="absolute top-1/2 left-1/2 w-0.5 h-3 bg-gray-600 logo-radiating-lines sidebar"
+                        style={{
+                          '--rotation': `${i * 30}deg`,
+                        } as React.CSSProperties}
+                      />
                   ))}
                 </div>
               </div>
@@ -156,6 +158,48 @@ const AppSidebar: React.FC = () => {
               >
               </h2>
               {renderMenuItems(navItems)}
+              
+              {/* Admin Access Button - Always visible */}
+              <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+                {canCreateEvents ? (
+                  <Link
+                    to="/admin"
+                    className={`menu-item group ${
+                      location.pathname.startsWith('/admin') ? "menu-item-active" : "menu-item-inactive"
+                    }`}
+                  >
+                    <span
+                      className={`menu-item-icon-size ${
+                        location.pathname.startsWith('/admin')
+                          ? "menu-item-icon-active"
+                          : "menu-item-icon-inactive"
+                      }`}
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                    </span>
+                    {(isExpanded || isHovered || isMobileOpen || isMobile) && (
+                      <span className="menu-item-text">Admin Panel</span>
+                    )}
+                  </Link>
+                ) : (
+                  <button
+                    onClick={() => setHasAttemptedLogin(true)}
+                    className="menu-item group menu-item-inactive"
+                  >
+                    <span className="menu-item-icon-size menu-item-icon-inactive">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                      </svg>
+                    </span>
+                    {(isExpanded || isHovered || isMobileOpen || isMobile) && (
+                      <span className="menu-item-text">Admin Login</span>
+                    )}
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </nav>
@@ -166,6 +210,14 @@ const AppSidebar: React.FC = () => {
 
   return (
     <>
+      {/* Mobile Overlay */}
+      {isMobileOpen && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+          onClick={toggleMobileSidebar}
+        />
+      )}
+      
       {/* Desktop Sidebar */}
       <aside
         className={`hidden lg:flex fixed flex-col top-0 px-5 left-0 bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200
@@ -210,6 +262,21 @@ const AppSidebar: React.FC = () => {
             </Link>
           ))}
         </div>
+        
+        {/* Admin Login Button for Mobile - Only show if user has actually attempted login but is not authenticated */}
+        {hasAttemptedLogin === true && canCreateEvents === false && (
+          <div className="absolute -top-12 right-4">
+            <Link
+              to="/admin"
+              className="flex items-center justify-center w-12 h-12 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 transition-colors"
+              title="Admin Login"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+            </Link>
+          </div>
+        )}
       </nav>
     </>
   );

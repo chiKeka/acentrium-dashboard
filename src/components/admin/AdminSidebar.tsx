@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { AdminSection } from '../../types/dashboard';
+import { useUser } from '../../context/UserContext';
 
 interface AdminSidebarProps {
   activeSection: AdminSection;
@@ -9,10 +10,12 @@ interface AdminSidebarProps {
 }
 
 const AdminSidebar: React.FC<AdminSidebarProps> = ({ 
+  activeSection,
   onSectionChange, 
   user 
 }) => {
   const location = useLocation();
+  const { logout } = useUser();
 
   const menuItems = [
     {
@@ -134,7 +137,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
           </Link>
           <button
             onClick={() => {
-              // Add logout functionality
+              logout();
               window.location.href = '/';
             }}
             className="flex items-center space-x-2 text-sm text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 transition-colors"
