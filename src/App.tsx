@@ -7,6 +7,7 @@ import AppLayout from "./layout/AppLayout";
 import { ScrollToTop } from "./components/common/ScrollToTop";
 import Home from "./pages/Dashboard/Home";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
 import { DataProvider } from "./context/DataContext";
 import { UserProvider } from "./context/UserContext";
 
@@ -27,8 +28,12 @@ export default function App() {
                 <Route path="/initiatives" element={<Initiatives />} />
               </Route>
               
-              {/* Admin Routes */}
-              <Route path="/admin/*" element={<AdminDashboard />} />
+              {/* Admin Routes - Protected */}
+              <Route path="/admin/*" element={
+                <ProtectedRoute>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              } />
             </Routes>
           </Router>
         </DataProvider>
