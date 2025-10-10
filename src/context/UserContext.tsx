@@ -43,27 +43,30 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 
   useEffect(() => {
     // Check for existing session on app load
-    const savedUser = localStorage.getItem("acentrium_user");
-    const sessionTimeout = localStorage.getItem("acentrium_session_timeout");
-    
-    if (savedUser && sessionTimeout) {
-      try {
-        const parsedUser = JSON.parse(savedUser);
-        const timeoutTime = parseInt(sessionTimeout);
-        const now = Date.now();
-        
-        // Check if session is still valid (24 hours)
-        if (now - timeoutTime < 24 * 60 * 60 * 1000) {
-          setUser(parsedUser);
-        } else {
-          // Session expired, clear storage
+    // Only run on client side to avoid SSR issues
+    if (typeof window !== 'undefined') {
+      const savedUser = localStorage.getItem("acentrium_user");
+      const sessionTimeout = localStorage.getItem("acentrium_session_timeout");
+      
+      if (savedUser && sessionTimeout) {
+        try {
+          const parsedUser = JSON.parse(savedUser);
+          const timeoutTime = parseInt(sessionTimeout);
+          const now = Date.now();
+          
+          // Check if session is still valid (24 hours)
+          if (now - timeoutTime < 24 * 60 * 60 * 1000) {
+            setUser(parsedUser);
+          } else {
+            // Session expired, clear storage
+            localStorage.removeItem("acentrium_user");
+            localStorage.removeItem("acentrium_session_timeout");
+          }
+        } catch (error) {
+          console.error("Error parsing saved user:", error);
           localStorage.removeItem("acentrium_user");
           localStorage.removeItem("acentrium_session_timeout");
         }
-      } catch (error) {
-        console.error("Error parsing saved user:", error);
-        localStorage.removeItem("acentrium_user");
-        localStorage.removeItem("acentrium_session_timeout");
       }
     }
     setIsLoading(false);
