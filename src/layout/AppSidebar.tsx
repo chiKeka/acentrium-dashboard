@@ -8,7 +8,6 @@ import DesktopMenuToggle from "../components/ui/button/DesktopMenuToggle";
 import {
   CalenderIcon,
   GridIcon,
-  HorizontaLDots,
   PieChartIcon,
   ListIcon,
   UserCircleIcon,

@@ -4,13 +4,11 @@ import { AdminSection } from '../../types/dashboard';
 import { useUser } from '../../context/UserContext';
 
 interface AdminSidebarProps {
-  activeSection: AdminSection;
   onSectionChange: (section: AdminSection) => void;
   user: any;
 }
 
 const AdminSidebar: React.FC<AdminSidebarProps> = ({ 
-  activeSection,
   onSectionChange, 
   user 
 }) => {
