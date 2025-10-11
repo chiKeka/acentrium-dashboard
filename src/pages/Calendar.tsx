@@ -307,10 +307,18 @@ const Calendar: React.FC = () => {
 
 interface EventInfo {
   event: {
+    title: string;
     extendedProps: {
       calendar: string;
     };
   };
+  timeText: string;
+  isStart: boolean;
+  isEnd: boolean;
+  isMirror: boolean;
+  isPast: boolean;
+  isFuture: boolean;
+  isToday: boolean;
 }
 
 const renderEventContent = (eventInfo: EventInfo) => {

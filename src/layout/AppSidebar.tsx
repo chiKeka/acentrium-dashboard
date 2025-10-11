@@ -80,7 +80,7 @@ const AppSidebar: React.FC = () => {
               {nav.icon}
             </span>
             {(isExpanded || isHovered || isMobileOpen) && (
-              <span className="menu-item-text">{nav.name}</span>
+              <span className="menu-item-text text-gray-200">{nav.name}</span>
             )}
           </Link>
         </li>
@@ -105,7 +105,7 @@ const AppSidebar: React.FC = () => {
                     {[...Array(12)].map((_, i) => (
                       <div
                       key={i}
-                        className="absolute top-1/2 left-1/2 w-0.5 h-3 bg-gray-600 logo-radiating-lines sidebar"
+                        className=""
                         style={{
                           '--rotation': `${i * 30}deg`,
                         } as React.CSSProperties}
@@ -131,7 +131,7 @@ const AppSidebar: React.FC = () => {
                   {[...Array(12)].map((_, i) => (
                       <div
                         key={i}
-                        className="absolute top-1/2 left-1/2 w-0.5 h-3 bg-gray-600 logo-radiating-lines sidebar"
+                        className=" "
                         style={{
                           '--rotation': `${i * 30}deg`,
                         } as React.CSSProperties}
@@ -194,7 +194,7 @@ const AppSidebar: React.FC = () => {
                       </svg>
                     </span>
                     {(isExpanded || isHovered || isMobileOpen || isMobile) && (
-                      <span className="menu-item-text">Admin Login</span>
+                      <span className="menu-item-text text-gray-200">Admin Login</span>
                     )}
                   </button>
                 )}
