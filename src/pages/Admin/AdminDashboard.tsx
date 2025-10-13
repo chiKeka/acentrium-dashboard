@@ -11,8 +11,13 @@ import AdminSettings from './AdminSettings';
 import { AdminSection } from '../../types/dashboard';
 
 const AdminDashboard: React.FC = () => {
-  const { user } = useUser();
+  const { user, canCreateEvents } = useUser(); // canCreateEvents is true if user is admin
   const [, setActiveSection] = useState<AdminSection>('dashboard');
+
+  // Redirect to home if not authenticated
+  if (!user || !canCreateEvents) {
+    return <Navigate to="/" replace />;
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -20,7 +25,7 @@ const AdminDashboard: React.FC = () => {
         {/* Admin Sidebar */}
         <AdminSidebar 
           onSectionChange={setActiveSection}
-          user={user}
+          user={user} // user is the current user
         />
 
         {/* Main Content */}
