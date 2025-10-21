@@ -9,6 +9,7 @@ import {
   CountryData,
   CompletionData
 } from '../types/dashboard';
+import { ApexOptions } from 'apexcharts';
 
 interface DataContextType {
   // Dashboard Data
@@ -321,7 +322,7 @@ const defaultCompletionData: CompletionData = {
     xaxis: {
       categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
     }
-  }
+  } as ApexOptions
 };
 
 export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) => {

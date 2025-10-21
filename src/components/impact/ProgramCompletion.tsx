@@ -1,6 +1,7 @@
 
 import Chart from 'react-apexcharts';
 import { useData } from '../../context/DataContext';
+import { ApexOptions } from 'apexcharts';
 
 export default function ProgramCompletion() {
   const { programs, completionData } = useData();
@@ -10,7 +11,7 @@ export default function ProgramCompletion() {
   const overallCompletionRate = Math.round((totalCompleted / totalEnrolled) * 100);
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-2xl border border-gray-200 dark:border-gray-700 p-6">
       <div className="mb-6">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
           Program Completion Analysis
@@ -55,7 +56,7 @@ export default function ProgramCompletion() {
         </h4>
         <div className="h-[300px]">
           <Chart
-            options={completionData.options}
+            options={completionData.options as ApexOptions}
             series={completionData.series}
             type="line"
             height="100%"

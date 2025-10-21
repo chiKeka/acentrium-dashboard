@@ -3,9 +3,17 @@ import { Link, useLocation } from 'react-router-dom';
 import { AdminSection } from '../../types/dashboard';
 import { useUser } from '../../context/UserContext';
 
+type User = {
+  id: string;
+  name: string;
+  email: string;
+  role: "team_member" | "public_user";
+  isTeamMember: boolean;
+};
+
 interface AdminSidebarProps {
   onSectionChange: (section: AdminSection) => void;
-  user: any;
+  user: User;
 }
 
 const AdminSidebar: React.FC<AdminSidebarProps> = ({ 

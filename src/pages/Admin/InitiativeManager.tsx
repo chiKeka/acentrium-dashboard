@@ -171,7 +171,7 @@ const InitiativeManager: React.FC = () => {
                 </label>
                 <select
                   value={formData.category || 'education'}
-                  onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value as any }))}
+                  onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value as 'education' | 'research' | 'community' | 'policy' }))}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
                   aria-label="Initiative Category"
                 >
@@ -204,7 +204,7 @@ const InitiativeManager: React.FC = () => {
                 </label>
                 <select
                   value={formData.status || 'planned'}
-                  onChange={(e) => setFormData(prev => ({ ...prev, status: e.target.value as any }))}
+                  onChange={(e) => setFormData(prev => ({ ...prev, status: e.target.value as 'active' | 'completed' | 'planned' }))}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
                   aria-label="Initiative Status"
                 >
